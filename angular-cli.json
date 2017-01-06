@@ -20,7 +20,11 @@
       "styles": [
         "styles.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/ace-builds/src-min/ace.js",
+        "../node_modules/ace-builds/src-min/theme-tomorrow.js",
+        "../node_modules/ace-builds/src-min/mode-yaml.js"
+      ],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",

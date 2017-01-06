@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { YamlEntryComponent } from './yaml-entry/yaml-entry.component';
+import { RawStixComponent } from './raw-stix/raw-stix.component';
+import { Stix } from './stix';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+
+  rawStix:Stix.Bundle;
+
+  stixChanged(stix:Stix.Bundle) {
+    this.rawStix = stix;
+  }
 }
