@@ -23,6 +23,7 @@
     "@angular/router": "^3.3.1",
     "core-js": "^2.4.1",
     "js-yaml": "^3.7.0",
+    "ng2-ace-editor": "^0.1.4",
     "rxjs": "^5.0.1",
     "ts-helpers": "^1.1.1",
     "uuid": "^3.0.1",

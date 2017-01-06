@@ -54,7 +54,6 @@ export class YamlEntryComponent implements OnInit {
 
   private resolveRelationships(obj:Stix.Object, allObjs:Stix.Object[]):void {
     for (let prop of ['source_ref', 'target_ref', 'created_by_ref', 'sighting_of_ref', 'where_sighted_ref']) {
-      if(obj[prop] !== null) { console.log(obj[prop]) }
       if(typeof(obj[prop]) === "number" && allObjs[obj[prop]]) {
         obj[prop] = allObjs[obj[prop]].id;
       }
