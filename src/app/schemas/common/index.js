@@ -1,0 +1,13 @@
+exports["bundle"] = require("./bundle.json");
+exports["core"] = require("./core.json");
+exports["cyber-observable-core"] = require("./cyber-observable-core.json");
+exports["dictionary"] = require("./dictionary.json");
+exports["external-reference"] = require("./external-reference.json");
+exports["granular-marking"] = require("./granular-marking.json");
+exports["hashes-type"] = require("./hashes-type.json");
+exports["hex"] = require("./hex.json");
+exports["identifier"] = require("./identifier.json");
+exports["kill-chain-phase"] = require("./kill-chain-phase.json");
+exports["marking-definition"] = require("./marking-definition.json");
+exports["timestamp"] = require("./timestamp.json");
+exports["url-regex"] = require("./url-regex.json");

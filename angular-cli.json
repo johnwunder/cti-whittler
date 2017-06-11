@@ -21,9 +21,9 @@
         "styles.css"
       ],
       "scripts": [
-        "../node_modules/ace-builds/src-min/ace.js",
-        "../node_modules/ace-builds/src-min/theme-tomorrow.js",
-        "../node_modules/ace-builds/src-min/mode-yaml.js"
+        "../node_modules/ace-builds/src/ace.js",
+        "../node_modules/ace-builds/src-min/mode-yaml.js",
+        "assets/theme-tomorrow.js"
       ],
       "environments": {
         "source": "environments/environment.ts",

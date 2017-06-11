@@ -1,6 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Stix } from '../stix';
 import * as jsyaml from 'js-yaml';
+declare var ace:any;
+let aceRange = ace.require('ace/range').Range;
 
 @Component({
   selector: 'yaml-entry',
@@ -9,8 +11,11 @@ import * as jsyaml from 'js-yaml';
 })
 export class YamlEntryComponent implements OnInit {
 
+  @ViewChild('editor') editor;
+
   @Output() stixChanged = new EventEmitter();
   bundle:Stix.Bundle;
+  markers:any[] = [];
 
   constructor() {
     this.bundle = new Stix.Bundle();
@@ -18,6 +23,8 @@ export class YamlEntryComponent implements OnInit {
 
   ngOnInit() {
     this.stixChanged.emit(this.bundle);
+    Stix.initValidator();
+
   }
 
   handleUserEntry(rawStix:String):void {
@@ -26,10 +33,21 @@ export class YamlEntryComponent implements OnInit {
   }
 
   private generateSTIX(from):void {
-    let objects = from.split(/\n( *\n)+/);
+    var that = this;
+    this.markers.forEach(function(marker) {
+      that.editor.getEditor().getSession().removeMarker(marker);
+    });
+    this.markers = [];
 
+    let objects = from.split(/\n( *\n)/);
+    let line = 0;
+    let count = 0;
 
     let stixObjects = objects.map(function(item) {
+      if(item.match(/^[ \n]+$/g) !== null) { line = line - 1};
+      let newlinesRegex = item.match(/\n/g);
+      let newlines = (newlinesRegex == null ? 0 : newlinesRegex.length);
+
       try {
         let parsedItem = jsyaml.safeLoad(item);
 
@@ -37,11 +55,25 @@ export class YamlEntryComponent implements OnInit {
           let stixType = Object.keys(parsedItem)[0];
 
           if(parsedItem[stixType] instanceof Object) {
-            return new Stix.Object(stixType, parsedItem[stixType]);
+            let obj = new Stix.Object(stixType, parsedItem[stixType]);
+            let result = obj.valid()
+
+            if(result == null) {
+
+            } else if (!result.valid) {
+              let r = new aceRange(line, 0, line + newlines, 100);
+              that.markers.push(that.editor.getEditor().getSession().addMarker(r, "warning", "fullLine", false));
+            }
+            return obj;
           }
         }
       } catch(e) {
+        console.log(e);
         return null;
+      } finally {
+        console.log(line, newlines, count)
+        line = line + newlines + 1;
+        count = count + 1;
       }
     }).filter(item => item !== null && item !== undefined);
 
@@ -53,7 +85,7 @@ export class YamlEntryComponent implements OnInit {
   }
 
   private resolveRelationships(obj:Stix.Object, allObjs:Stix.Object[]):void {
-    for (let prop of ['source_ref', 'target_ref', 'created_by_ref', 'sighting_of_ref', 'where_sighted_ref']) {
+    for (let prop of ['source_ref', 'target_ref', 'created_by_ref', 'sighting_of_ref', 'where_sighted_ref', 'translation_of_ref']) {
       if(typeof(obj[prop]) === "number" && allObjs[obj[prop]]) {
         obj[prop] = allObjs[obj[prop]].id;
       }
