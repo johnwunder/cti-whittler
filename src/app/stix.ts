@@ -49,7 +49,11 @@ export module Stix {
     }
 
     valid():tv4.SingleResult {
-      return validate(JSON.parse(JSON.stringify(this)));
+      let valid = validate(JSON.parse(JSON.stringify(this)));
+
+      if(valid !== null) { console.log(valid) }
+
+      return valid;
     }
   }
 

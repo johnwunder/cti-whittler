@@ -43,8 +43,10 @@ export class YamlEntryComponent implements OnInit {
     let line = 0;
     let count = 0;
 
+    // Perform our initial processing to give everything an ID and default attributes
     let stixObjects = objects.map(function(item) {
       if(item.match(/^[ \n]+$/g) !== null) { line = line - 1};
+
       let newlinesRegex = item.match(/\n/g);
       let newlines = (newlinesRegex == null ? 0 : newlinesRegex.length);
 
@@ -55,29 +57,31 @@ export class YamlEntryComponent implements OnInit {
           let stixType = Object.keys(parsedItem)[0];
 
           if(parsedItem[stixType] instanceof Object) {
-            let obj = new Stix.Object(stixType, parsedItem[stixType]);
-            let result = obj.valid()
-
-            if(result == null) {
-
-            } else if (!result.valid) {
-              let r = new aceRange(line, 0, line + newlines, 100);
-              that.markers.push(that.editor.getEditor().getSession().addMarker(r, "warning", "fullLine", false));
-            }
-            return obj;
+            return new Stix.Object(stixType, parsedItem[stixType]);
           }
         }
       } catch(e) {
         console.log(e);
         return null;
       } finally {
-        console.log(line, newlines, count)
         line = line + newlines + 1;
         count = count + 1;
       }
     }).filter(item => item !== null && item !== undefined);
 
     for(let obj of stixObjects) { this.resolveRelationships(obj, stixObjects); }
+
+    // If we want to validate
+    // for(let obj of stixObjects) {
+    //   let result = obj.valid()
+    //
+    //   if(result == null) {
+    //
+    //   } else if (!result.valid) {
+    //     let r = new aceRange(line, 0, line + 1, 100);
+    //     that.markers.push(that.editor.getEditor().getSession().addMarker(r, "warning", "fullLine", false));
+    //   }
+    // }
 
     this.bundle.objects = stixObjects;
 

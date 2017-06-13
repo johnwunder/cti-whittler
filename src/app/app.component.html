@@ -1,3 +1,8 @@
 <h1>CTI Whittler<span>Craft hand-spun, artisanal cyber threat intelligence</span></h1>
-<yaml-entry (stixChanged)="stixChanged($event)"></yaml-entry>
-<raw-stix [rawStix]="rawStix"></raw-stix>
+<div class="text-panel">
+  <yaml-entry (stixChanged)="stixChanged($event)"></yaml-entry>
+  <raw-stix [rawStix]="rawStix"></raw-stix>
+</div>
+<div class="viz-panel">
+  <visualizer #visualizer></visualizer>
+</div>

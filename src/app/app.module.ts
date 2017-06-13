@@ -8,13 +8,15 @@ import { AceEditorComponent } from 'ng2-ace-editor';
 import { AppComponent } from './app.component';
 import { YamlEntryComponent } from './yaml-entry/yaml-entry.component';
 import { RawStixComponent } from './raw-stix/raw-stix.component';
+import { VisualizerComponent } from './visualizer/visualizer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     YamlEntryComponent,
     RawStixComponent,
-    AceEditorComponent
+    AceEditorComponent,
+    VisualizerComponent
   ],
   imports: [
     BrowserModule,

@@ -9,7 +9,8 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        "icons"
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -23,7 +24,9 @@
       "scripts": [
         "../node_modules/ace-builds/src/ace.js",
         "../node_modules/ace-builds/src-min/mode-yaml.js",
-        "assets/theme-tomorrow.js"
+        "assets/theme-tomorrow.js",
+        "assets/d3.min.js",
+        "assets/stix2viz.js"
       ],
       "environments": {
         "source": "environments/environment.ts",
