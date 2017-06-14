@@ -29,7 +29,7 @@ export class VisualizerComponent implements OnInit {
   runViz():void {
     // For now, just generate the actual STIX
     if(this.initialized) {
-      vizStix(this.rawStix);
+      vizStix(JSON.parse(JSON.stringify(this.rawStix)));
     }
   }
 }

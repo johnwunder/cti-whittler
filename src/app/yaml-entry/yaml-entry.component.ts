@@ -61,7 +61,6 @@ export class YamlEntryComponent implements OnInit {
           }
         }
       } catch(e) {
-        console.log(e);
         return null;
       } finally {
         line = line + newlines + 1;
