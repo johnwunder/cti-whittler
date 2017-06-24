@@ -22,10 +22,6 @@ export class VisualizerComponent implements OnInit {
     this.initialized = true;
   }
 
-  updateViz(stix:Stix.Bundle) {
-
-  };
-
   runViz():void {
     // For now, just generate the actual STIX
     if(this.initialized) {

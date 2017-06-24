@@ -27,64 +27,55 @@ export class YamlEntryComponent implements OnInit {
 
   }
 
-  handleUserEntry(rawStix:String):void {
+  handleUserEntry(rawStix:string):void {
     // For now, just generate the actual STIX
     this.generateSTIX(rawStix);
   }
 
-  private generateSTIX(from):void {
-    var that = this;
-    this.markers.forEach(function(marker) {
-      that.editor.getEditor().getSession().removeMarker(marker);
-    });
-    this.markers = [];
+  splitObjects(input:string):Array<string> {
+    return input.split(/(?: *\n *\n)+/g).map((i) => i.trim());
+  }
 
-    let objects = from.split(/\n( *\n)/);
-    let line = 0;
-    let count = 0;
-
-    // Perform our initial processing to give everything an ID and default attributes
-    let stixObjects = objects.map(function(item) {
-      if(item.match(/^[ \n]+$/g) !== null) { line = line - 1};
-
-      let newlinesRegex = item.match(/\n/g);
-      let newlines = (newlinesRegex == null ? 0 : newlinesRegex.length);
-
+  createStixObjects(yamlStrings:Array<string>):Array<Stix.Object> {
+    let stixObjects = yamlStrings.map((yaml, i) => {
       try {
-        let parsedItem = jsyaml.safeLoad(item);
-
-        if(parsedItem instanceof Object) {
-          let stixType = Object.keys(parsedItem)[0];
-
-          if(parsedItem[stixType] instanceof Object) {
-            return new Stix.Object(stixType, parsedItem[stixType]);
-          }
-        }
+        return this.createStixObject(yaml, this.bundle.objects[i]);
       } catch(e) {
         return null;
-      } finally {
-        line = line + newlines + 1;
-        count = count + 1;
       }
     }).filter(item => item !== null && item !== undefined);
 
     for(let obj of stixObjects) { this.resolveRelationships(obj, stixObjects); }
 
-    // If we want to validate
-    // for(let obj of stixObjects) {
-    //   let result = obj.valid()
-    //
-    //   if(result == null) {
-    //
-    //   } else if (!result.valid) {
-    //     let r = new aceRange(line, 0, line + 1, 100);
-    //     that.markers.push(that.editor.getEditor().getSession().addMarker(r, "warning", "fullLine", false));
-    //   }
-    // }
+    return stixObjects;
+  }
 
-    this.bundle.objects = stixObjects;
+  createStixObject(yaml:string, existingObject:Stix.Object):Stix.Object {
+    let parsedItem = jsyaml.safeLoad(yaml);
 
-    this.stixChanged.emit(this.bundle);
+    if(parsedItem instanceof Object) {
+      let stixType = Object.keys(parsedItem)[0];
+
+      if(parsedItem[stixType] instanceof Object) {
+        let fields = parsedItem[stixType];
+
+        if(existingObject && existingObject.type == stixType) {
+          fields['id'] = existingObject.id;
+        }
+        return new Stix.Object(stixType, parsedItem[stixType]);
+      }
+    } else {
+      return null;
+    }
+  }
+
+  private generateSTIX(from:string):void {
+    let objects = this.splitObjects(from);
+
+    if(objects !== null && objects.length > 0) {
+      this.bundle.objects = this.createStixObjects(objects);
+      this.stixChanged.emit(this.bundle);
+    }
   }
 
   private resolveRelationships(obj:Stix.Object, allObjs:Stix.Object[]):void {

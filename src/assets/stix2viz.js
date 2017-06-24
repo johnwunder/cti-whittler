@@ -81,10 +81,6 @@ function vizInit(canvas, config, legendCb, selectedCb) {
  *     - callback: optional function to call after building the graph
  * ******************************************************/
 function vizStix(content, callback) {
-  currentGraph.nodes = [];
-  currentGraph.edges = [];
-  labelGraph.nodes = [];
-  labelGraph.edges = [];
   var parsed;
   if (typeof content === 'string' || content instanceof String) {
     try {
@@ -409,6 +405,7 @@ function handlePin(d, el, pinBool) {
 function buildNodes(package) {
   var relationships = [];
   if(package.hasOwnProperty('objects')) {
+    // Add the SDOs
     parseSDOs(package['objects']);
 
     // Get embedded relationships
