@@ -42,7 +42,7 @@ describe('The YAML Entry component', () => {
   });
 
   it('should generate a STIX object', () => {
-    let object = comp.createStixObject("campaign:\n  name: Shade of Palms\n\n\n");
+    let object = comp.createStixObject("campaign:\n  name: Shade of Palms\n\n\n", undefined);
 
     expect(object.id).toBeTruthy();
     expect(object['name']).toEqual("Shade of Palms");

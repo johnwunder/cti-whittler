@@ -15,8 +15,6 @@ module.exports = function (config) {
       { pattern: './node_modules/ace-builds/src/ace.js', watched: false },
       { pattern: "./node_modules/ace-builds/src-min/mode-yaml.js", watched: false},
       { pattern: "./src/assets/theme-tomorrow.js", watched: false},
-      { pattern: "./src/assets/d3.min.js", watched: false},
-      { pattern: "./src/assets/stix2viz.js", watched: false},
       { pattern: './src/test.ts', watched: false }
     ],
     preprocessors: {

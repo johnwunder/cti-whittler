@@ -24,9 +24,7 @@
       "scripts": [
         "../node_modules/ace-builds/src/ace.js",
         "../node_modules/ace-builds/src-min/mode-yaml.js",
-        "assets/theme-tomorrow.js",
-        "assets/d3.min.js",
-        "assets/stix2viz.js"
+        "assets/theme-tomorrow.js"
       ],
       "environments": {
         "source": "environments/environment.ts",
