@@ -32,6 +32,7 @@ raw-stix {
   height: 50%;
   margin: 0;
   border: 1px solid #eee;
+  border-bottom: 0;
   padding: 15px;
   position: absolute;
   top: 50%;
@@ -55,5 +56,41 @@ h1 span {
   font-size: 18px;
   margin-left: 20px;
   display: inline-block;
+  color: #ccc;
+}
+
+#help-overlay {
+  padding: 0 50px;
+  font-family: 'Source Sans Pro';
+  color: #999;
+  font-size: 16px;
+  z-index: 100;
+}
+
+#help-overlay h2 {
   color: #aaa;
+  font-size: 24px;
+}
+
+.section:first-child {
+  float: right;
+  width: 400px;
+}
+
+.section:last-child {
+  float: left;
+  width: 200px;
+}
+
+.section .example {
+  white-space: pre-wrap;
+  font-family: 'Source Code Pro';
+}
+
+#visualizer, #help-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }

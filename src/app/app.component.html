@@ -4,5 +4,28 @@
   <raw-stix [rawStix]="rawStix"></raw-stix>
 </div>
 <div class="viz-panel">
+  <div id="help-overlay">
+    <div class="section">
+      <h2>Give it a shot!</h2>
+      <div class="example">campaign:
+  name: Shade of Palms
+
+indicator:
+  name: Hash xyz
+  pattern: "[file.hashes.MD5 = 'xyz']"
+
+relationship:
+  relationship_type: indicates
+  source_ref: 1
+  target_ref: Shade of Palms
+      </div>
+    </div>
+    <div class="section">
+      <h2>Add objects&hellip;</h2>
+      Objects are each valid YAML, where the key is the type of object and the properties are under that key. Objects should be separated by a new line.
+      <h2>Link 'em together&hellip;</h2>
+      Relationships can be defined either with a 0-based index to the object or with the name of the object. Anything ending in _ref is considered a relationship.
+    </div>
+  </div>
   <visualizer #visualizer></visualizer>
 </div>

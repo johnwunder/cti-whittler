@@ -15,9 +15,15 @@ relationship:
   target_ref: 0
 ```
 
-I was learning Angular 2 during this so please ignore all of my terrible coding practices. I clearly have no idea what I'm doing.
+## Usage
+
+Write your objects as above: each object should be valid YAML and separated from other objects by a blank line. The icons in the visualization get labeled by the `name` property.
+
+Relationships can be defined in two ways: first, an integer with the 0-based index of the target. Second, a string with the name of the target (obviously requires names to be unique, otherwise it'll just target the first one). Relationships include both the `relationship` object (`source_ref`, `target_ref`) as well as any properties ending in `_ref`.
 
 ## Development
+I was learning Angular 2 during this so please ignore all of my terrible coding practices. I clearly have no idea what I'm doing.
+
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
