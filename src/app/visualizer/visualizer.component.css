@@ -1,4 +1,31 @@
-div#d3-container {
-  width: 100%;
-  height: 100%;
+div#d3container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.links path {
+  stroke: #aaa;
+  stroke-width: 1;
+  marker-end: url(#end);
+}
+
+.nodes g image {
+  width: 30px;
+  height: 30px;
+}
+
+.nodes text {
+  font-size: 20px;
+}
+
+text {
+  font-family: 'Source Sans Pro', monospace;
+}
+
+.link text {
+  text-anchor: middle;
+  font-size: 13px;
 }

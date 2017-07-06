@@ -1,4 +1,5 @@
 pre#raw-stix {
   font-family: "Source Code Pro", Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace;
   font-size: 12px;
+  white-space: pre-wrap;
 }

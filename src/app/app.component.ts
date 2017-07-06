@@ -16,10 +16,6 @@ export class AppComponent {
 
   stixChanged(stix:Stix.Bundle) {
     this.rawStix = stix;
-    this.visualizer.rawStix = stix;
-
-    if(this.visualizer.initialized) {
-      this.visualizer.runViz();
-    }
+    this.visualizer.visualize(stix);
   }
 }

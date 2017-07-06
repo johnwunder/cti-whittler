@@ -10,7 +10,7 @@ indicator:
   pattern: "[file.hashes.MD5 = 'xxx']"
 
 relationship:
-  name: indicates
+  relationship_type: indicates
   source_ref: 1
   target_ref: 0
 ```
