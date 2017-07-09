@@ -124,7 +124,7 @@ export class VisualizerComponent implements OnInit {
     let enterNode = this.node
       .enter().append("g")
       .attr("class", "node")
-    enterNode.append("image").attr("xlink:href", (d) => "icons/" + d.type + ".png");
+    enterNode.append("image").attr("xlink:href", (d) => "icons/" + d.type + ".png").attr('width', 30).attr('height', 30);
     enterNode.append("title");
     enterNode.append("text").attr("dx", 40).attr("dy", 20);
 
