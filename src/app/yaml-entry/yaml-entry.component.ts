@@ -81,15 +81,25 @@ export class YamlEntryComponent implements OnInit {
   private resolveRelationships(obj:Stix.Object, allObjs:Stix.Object[]):void {
     for (let prop in obj) {
       if(prop.match(/_ref$/)) {
-        if(typeof(obj[prop]) === "number" && allObjs[obj[prop]]) {
-          obj[prop] = allObjs[obj[prop]].id;
-        } else {
-          let target = allObjs.find((o) => o['name'] === obj[prop])
-          if(target) {
-            obj[prop] = target.id;
-          }
+          obj[prop] = this.resolveRelationship(obj[prop], allObjs);
+      } else if (prop.match(/_refs$/) && obj[prop].constructor === Array) {
+        for(let i = 0; i < obj[prop].length; i++) {
+          obj[prop][i] = this.resolveRelationship(obj[prop][i], allObjs);
         }
       }
     }
+  }
+
+  private resolveRelationship(idref:any, allObjects:Stix.Object[]):string {
+    if(typeof(idref) === "number" && allObjects[idref]) {
+      return allObjects[idref].id;
+    } else {
+      let target = allObjects.find((o) => o['name'] === idref)
+      if(target) {
+        return target.id;
+      }
+    }
+
+    return null;
   }
 }
