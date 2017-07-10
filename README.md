@@ -26,7 +26,7 @@ I was learning Angular 2 during this so please ignore all of my terrible coding 
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build, use use `--base-href` to set the base href (e.g. to your github.io site root). For example, my build command is `ng build --prod --base-href https://johnwunder.github.io/cti-whittler/`.
 
 ## Deploying to Github Pages
 
