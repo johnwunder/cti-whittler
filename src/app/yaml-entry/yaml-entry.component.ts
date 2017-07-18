@@ -1,5 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, ViewChild, Optional } from '@angular/core';
 import { Stix } from '../stix';
+
 import * as jsyaml from 'js-yaml';
 declare var ace:any;
 let aceRange = ace.require('ace/range').Range;
@@ -9,27 +10,29 @@ let aceRange = ace.require('ace/range').Range;
   templateUrl: './yaml-entry.component.html',
   styleUrls: ['./yaml-entry.component.css']
 })
+
 export class YamlEntryComponent implements OnInit {
 
   @ViewChild('editor') editor;
 
   @Output() stixChanged = new EventEmitter();
+  @Input() rawInput:string;
+  @Input() readOnly:boolean;
+
   bundle:Stix.Bundle;
-  markers:any[] = [];
 
   constructor() {
     this.bundle = new Stix.Bundle();
   }
 
   ngOnInit() {
-    this.stixChanged.emit(this.bundle);
     Stix.initValidator();
-
   }
 
   handleUserEntry(rawStix:string):void {
-    // For now, just generate the actual STIX
+    this.rawInput = rawStix;
     this.generateSTIX(rawStix);
+    this.stixChanged.emit({bundle: this.bundle, text: this.rawInput});
   }
 
   splitObjects(input:string):Array<string> {
@@ -69,12 +72,11 @@ export class YamlEntryComponent implements OnInit {
     }
   }
 
-  private generateSTIX(from:string):void {
+  generateSTIX(from:string):void {
     let objects = this.splitObjects(from);
 
     if(objects !== null && objects.length > 0) {
       this.bundle.objects = this.createStixObjects(objects);
-      this.stixChanged.emit(this.bundle);
     }
   }
 

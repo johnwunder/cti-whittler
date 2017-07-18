@@ -21,6 +21,10 @@ Write your objects as above: each object should be valid YAML and separated from
 
 Relationships can be defined in two ways: first, an integer with the 0-based index of the target. Second, a string with the name of the target (obviously requires names to be unique, otherwise it'll just target the first one). Relationships include both the `relationship` object (`source_ref`, `target_ref`) as well as any properties ending in `_ref`.
 
+## Firebase Configuration
+
+The application supports an optional storage mechanism via Firebase. To enable it, simply set the appropriate configuration parameters in your `environment.ts` file (see [here](https://github.com/angular/angularfire2/blob/master/docs/1-install-and-setup.md)). If the Firebase configuration is set, it will be used and storage will be allowed. If not, the UI for storage will be hidden and the app will otherwise work as expected.
+
 ## Development
 I was learning Angular 2 during this so please ignore all of my terrible coding practices. I clearly have no idea what I'm doing.
 

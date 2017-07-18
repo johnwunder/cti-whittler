@@ -1,1 +1,1 @@
-<ace-editor #editor style="height:100%;" (textChanged)="handleUserEntry($event)" [theme]="'tomorrow'" [mode]="'yaml'"></ace-editor>
+<ace-editor #editor style="height:100%;" (textChanged)="handleUserEntry($event)" [theme]="'tomorrow'" [mode]="'yaml'" [(text)]="rawInput" [(readOnly)]="readOnly"></ace-editor>

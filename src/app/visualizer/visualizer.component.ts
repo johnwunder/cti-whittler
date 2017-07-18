@@ -41,8 +41,8 @@ export class VisualizerComponent implements OnInit {
 
     // Create the svg element as a child of the container and set its size manually
     this.svg = d3.select(element).append('svg')
-      .attr('width', element.offsetWidth)
-      .attr('height', element.offsetHeight);
+      .attr('width', element.offsetWidth - 20)
+      .attr('height', element.offsetHeight - 20);
 
     this.svg.append("g").attr("class", "links")
     this.svg.append("g").attr("class", "nodes")

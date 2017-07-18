@@ -3,7 +3,7 @@
   top: 100px;
   right: 50%;
   left: 0;
-  bottom: 0;
+  bottom: 15px;
   margin: 0;
   padding: 15px;
 }
@@ -29,7 +29,6 @@ yaml-entry {
 }
 
 raw-stix {
-  height: 50%;
   margin: 0;
   border: 1px solid #eee;
   border-bottom: 0;
@@ -50,6 +49,8 @@ h1 {
   font-family: 'Source Code Pro', monospace;
   font-size: 36px;
   font-weight: lighter;
+  float: left;
+  margin: 0;
 }
 
 h1 span {
@@ -57,6 +58,7 @@ h1 span {
   margin-left: 20px;
   display: inline-block;
   color: #ccc;
+  font-family: 'Source Sans Pro';
 }
 
 #help-overlay {
@@ -93,4 +95,47 @@ h1 span {
   bottom: 0;
   right: 0;
   left: 0;
+}
+
+.links a {
+  display: block;
+  float: right;
+  clear: both;
+}
+
+.sharing-link {
+  float: right;
+  font-family: 'Source Sans Pro';
+  font-size: 14px;
+}
+
+button {
+  color: transparent;
+  background-color: transparent;
+  cursor: pointer;
+  border: 0;
+}
+
+.sharing-link button {
+  text-indent: -2000px;
+  overflow: hidden;
+  width: 48px;
+  height: 48px;
+  background-image: url(/icons/eye.png);
+  display: inline-block;
+  opacity: .6;
+}
+
+.sharing-link button:hover {
+  opacity: 1;
+}
+
+.sharing-link input {
+  margin-left: 25px;
+  width: 400px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  font-family: 'Source Sans Pro';
+  font-size: 14px;
+  padding: 2px;
 }

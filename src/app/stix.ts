@@ -16,9 +16,11 @@ export module Stix {
     objects: Stix.Object[];
     id:string;
     type:string = "bundle";
+    spec_version:string;
 
     constructor() {
       this.id = "bundle--" + uuid.v4()
+      this.spec_version = "2.0"
       this.objects = [];
     }
   }
@@ -37,7 +39,10 @@ export module Stix {
       this.type = stixType;
       this.id = properties.id || this.generateId(stixType);
       this.created = properties.created || now;
-      this.modified = properties.modified || now;
+
+      if(this.type != "data-marking") {
+        this.modified = properties.modified || now;
+      }
 
       for (var key in properties) {
         this[key] = properties[key];

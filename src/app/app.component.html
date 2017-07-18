@@ -1,10 +1,17 @@
 <h1>CTI Whittler<span>Craft hand-spun, artisanal cyber threat intelligence</span></h1>
+<div class="sharing-link" *ngIf="db">
+   <div class="links" *ngIf="readUUID; else elseBlock">
+     <a ngxClipboard [cbContent]="readLink" href="#" (click)="false">Copy Read-Only Link</a>
+     <a ngxClipboard [cbContent]="writeLink" href="#" (click)="false" *ngIf="writeUUID">Copy Write Link</a>
+   </div>
+  <ng-template #elseBlock><button type="button" (click)="share($event.target)" href="#">Share</button></ng-template>
+</div>
 <div class="text-panel">
-  <yaml-entry (stixChanged)="stixChanged($event)"></yaml-entry>
+  <yaml-entry #yamlEntry (stixChanged)="stixChanged($event)" [rawInput]="rawInput" [readOnly]="readOnly"></yaml-entry>
   <raw-stix [rawStix]="rawStix"></raw-stix>
 </div>
 <div class="viz-panel">
-  <div id="help-overlay">
+  <div id="help-overlay" *ngIf="!readUUID">
     <div class="section">
       <h2>Give it a shot!</h2>
       <div class="example">campaign:
@@ -13,6 +20,10 @@
 indicator:
   name: Hash xyz
   pattern: "[file.hashes.MD5 = 'xyz']"
+  kill_chain_phases:
+    -
+      kill_chain_name: lockheed-martin-cyber-kill-chain
+      phase_name: reconnaissance
 
 relationship:
   relationship_type: indicates
