@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import {RootComponent} from './root.component';
 
-import { AceEditorComponent } from 'ng2-ace-editor';
+import { AceEditorModule } from 'ng2-ace-editor';
 import { ClipboardModule } from 'ngx-clipboard';
 
 import { AppComponent } from './app.component';
@@ -28,6 +28,7 @@ var imports = [
   FormsModule,
   HttpModule,
   ClipboardModule,
+  AceEditorModule,
   RouterModule.forRoot(appRoutes, {useHash: true})
 ]
 
@@ -44,7 +45,6 @@ if(environment['firebase']) {
     AppComponent,
     YamlEntryComponent,
     RawStixComponent,
-    AceEditorComponent,
     VisualizerComponent,
     RootComponent
   ],
