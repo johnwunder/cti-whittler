@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, OnInit, Optional } from '@angular/core';
-import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { YamlEntryComponent } from './yaml-entry/yaml-entry.component';
 import { RawStixComponent } from './raw-stix/raw-stix.component';
@@ -13,7 +13,7 @@ import 'rxjs/add/operator/switchMap';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  providers: [Location, {provide: LocationStrategy, useClass: PathLocationStrategy}],
+  providers: [Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
@@ -96,6 +96,6 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/whittles/', r, 'write', w])
   }
 
-  get readLink():string { return location.origin + this.location.prepareExternalUrl("/whittles/" + this.readUUID) }
-  get writeLink():string { return location.origin + this.location.prepareExternalUrl("/whittles/" + this.readUUID + "/write/" + this.writeUUID) }
+  get readLink():string { return location.origin + location.pathname + this.location.prepareExternalUrl("whittles/" + this.readUUID) }
+  get writeLink():string { return location.origin + location.pathname + this.location.prepareExternalUrl("whittles/" + this.readUUID + "/write/" + this.writeUUID) }
 }

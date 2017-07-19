@@ -17,33 +17,26 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { environment } from '../environments/environment';
 
-var imports = [];
-
 const appRoutes:Routes = [
   { path: 'whittles/:readUUID/write/:writeUUID', component: AppComponent },
   { path: 'whittles/:readUUID', component: AppComponent },
   { path: '', component: AppComponent }
 ]
 
+var imports = [
+  BrowserModule,
+  FormsModule,
+  HttpModule,
+  ClipboardModule,
+  RouterModule.forRoot(appRoutes, {useHash: true})
+]
+
 // Only init the firebase portion if firebase is installed
 if(environment['firebase']) {
-  imports = [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    ClipboardModule,
+  imports = imports.concat([
     AngularFireModule.initializeApp(environment['firebase']),
-    AngularFireDatabaseModule,
-    RouterModule.forRoot(appRoutes)
-  ]
-} else {
-  imports = [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    ClipboardModule,
-    RouterModule.forRoot(appRoutes)
-  ]
+    AngularFireDatabaseModule
+  ]);
 }
 
 @NgModule({
