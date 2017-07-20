@@ -2446,7 +2446,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "div#d3container {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n}\n\n.links path {\n  stroke: #aaa;\n  stroke-width: 1;\n  marker-end: url(#end);\n}\n\n.nodes g image {\n  width: 30px;\n  height: 30px;\n}\n\n.nodes text {\n  font-size: 16px;\n}\n\ntext {\n  font-family: 'Source Sans Pro', monospace;\n}\n\n.link text {\n  text-anchor: middle;\n  font-size: 13px;\n}\n", ""]);
+exports.push([module.i, "div#d3container {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n}\n\n.links path {\n  stroke: #aaa;\n  stroke-width: 1;\n  marker-end: url(#end);\n}\n\n.nodes g image {\n  width: 30px;\n  height: 30px;\n}\n\n.nodes text {\n  font-size: 16px;\n  stroke-width: 10px;\n  stroke: white;\n  stroke-opacity: 0.7;\n  paint-order: stroke;\n}\n\ntext {\n  font-family: 'Source Sans Pro', monospace;\n}\n\n.link text {\n  text-anchor: middle;\n  font-size: 13px;\n}\n", ""]);
 
 // exports
 
