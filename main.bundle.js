@@ -107,7 +107,6 @@ var AppComponent = (function () {
         this.rawStix = data.bundle;
         this.rawInput = data.text;
         if (this.writeUUID && data.persist) {
-            console.log("Writing to firebase: ", this.rawInput);
             this.db.object("/whittles/" + this.readUUID).set({ text: this.rawInput, 'write-uuid': this.writeUUID });
         }
         if (this.rawStix.objects && this.rawStix.objects.length > 0) {
@@ -119,7 +118,6 @@ var AppComponent = (function () {
         var _this = this;
         this.db.object("/whittles/" + this.readUUID + '/text').subscribe(function (value) {
             _this.rawInput = value['$value'];
-            console.log("Got new stix from firebase", value);
             if (_this.initialLoad && _this.rawInput.length > 0) {
                 _this.entryComponent.handleNewStix(_this.rawInput);
             }
