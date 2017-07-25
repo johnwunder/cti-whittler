@@ -2643,32 +2643,39 @@ var VisualizerComponent = (function () {
                 }
             }
             else {
-                var _loop_1 = function (k) {
-                    if (k.match(/_ref$/)) {
-                        if (stix.objects.find(function (o) { return o.id === n[k].id; })) {
-                            _this.edges.push({ id: n.id + k, source: n.id, target: n[k], label: k });
-                        }
-                    }
-                    else if (k.match(/_refs$/)) {
-                        var _loop_2 = function (i) {
-                            if (stix.objects.find(function (o) { return o.id === i; })) {
-                                _this.edges.push({ id: n.id + k + i, source: n.id, target: i, label: k });
-                            }
-                        };
-                        for (var _i = 0, _a = n[k]; _i < _a.length; _i++) {
-                            var i = _a[_i];
-                            _loop_2(i);
-                        }
-                    }
-                };
-                for (var k in n) {
-                    _loop_1(k);
-                }
+                _this.resolveRelationships(n, stix, n.id);
             }
         });
         this.forceLayout.nodes(this.nodes);
         this.forceLayout.force('link', __WEBPACK_IMPORTED_MODULE_1_d3__["forceLink"](this.edges).id(function (d) { return d.id; }).distance(200));
         this.forceLayout.alpha(1).restart();
+    };
+    VisualizerComponent.prototype.resolveRelationships = function (obj, stix, sourceId) {
+        var _loop_1 = function (k) {
+            if (k.match(/_ref$/)) {
+                if (stix.objects.find(function (o) { return o.id === obj[k]; })) {
+                    this_1.edges.push({ id: obj.id + k, source: sourceId, target: obj[k], label: k });
+                }
+            }
+            else if (k.match(/_refs$/)) {
+                var _loop_2 = function (i) {
+                    if (stix.objects.find(function (o) { return o.id === i; })) {
+                        this_1.edges.push({ id: obj.id + k + i, source: sourceId, target: i, label: k });
+                    }
+                };
+                for (var _i = 0, _a = obj[k]; _i < _a.length; _i++) {
+                    var i = _a[_i];
+                    _loop_2(i);
+                }
+            }
+            else if (typeof obj[k] === "object") {
+                this_1.resolveRelationships(obj[k], stix, sourceId);
+            }
+        };
+        var this_1 = this;
+        for (var k in obj) {
+            _loop_1(k);
+        }
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* ViewChild */])('d3container'),
@@ -2812,6 +2819,9 @@ var YamlEntryComponent = (function () {
                 for (var i = 0; i < obj[prop].length; i++) {
                     obj[prop][i] = this.resolveRelationship(obj[prop][i], allObjs);
                 }
+            }
+            else if (typeof obj[prop] === "object") {
+                this.resolveRelationships(obj[prop], allObjs);
             }
         }
     };
