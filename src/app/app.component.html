@@ -1,5 +1,5 @@
 <h1>CTI Whittler<span>Craft hand-spun, artisanal cyber threat intelligence</span></h1>
-<div class="sharing-link" *ngIf="db">
+<div class="sharing-link" *ngIf="hasDb()">
    <div class="links" *ngIf="readUUID; else elseBlock">
      <a ngxClipboard [cbContent]="readLink" href="#" (click)="false">Copy Read-Only Link</a>
      <a ngxClipboard [cbContent]="writeLink" href="#" (click)="false" *ngIf="writeUUID">Copy Write Link</a>
@@ -7,8 +7,9 @@
   <ng-template #elseBlock><button type="button" (click)="share($event.target)" href="#">Share</button></ng-template>
 </div>
 <div class="text-panel">
-  <yaml-entry #yamlEntry (stixChanged)="stixChanged($event)" [rawInput]="rawInput" [readOnly]="readOnly"></yaml-entry>
+  <yaml-entry #yamlEntry (stixChanged)="stixChanged($event)" [readOnly]="readOnly"></yaml-entry>
   <raw-stix [rawStix]="rawStix"></raw-stix>
+  <a id="copy-json" ngxClipboard [cbContent]="rawStix | json" href="#" (click)="false">Copy</a>
 </div>
 <div class="viz-panel">
   <div id="help-overlay" *ngIf="!readUUID">

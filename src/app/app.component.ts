@@ -60,12 +60,8 @@ export class AppComponent implements OnInit {
     this.rawStix = data.bundle;
     this.rawInput = data.text;
 
-    if(this.writeUUID) {
-      if(this.initialLoad == false) {
-        this.db.object("/whittles/" + this.readUUID).set({text: this.rawInput, 'write-uuid': this.writeUUID});
-      } else {
-        this.initialLoad = false;
-      }
+    if(this.writeUUID && data.persist) {
+      this.db.object("/whittles/" + this.readUUID).set({text: this.rawInput, 'write-uuid': this.writeUUID});
     }
 
     if(this.rawStix.objects && this.rawStix.objects.length > 0) {
@@ -80,7 +76,7 @@ export class AppComponent implements OnInit {
         this.rawInput = value['$value']
 
         if(this.initialLoad && this.rawInput.length > 0) {
-          this.entryComponent.handleUserEntry(this.rawInput);
+          this.entryComponent.handleNewStix(this.rawInput);
         }
       }
     )
@@ -94,6 +90,10 @@ export class AppComponent implements OnInit {
     this.db.object("/whittles/" + r).set({text: this.rawInput, 'write-uuid': w});
 
     this.router.navigate(['/whittles/', r, 'write', w])
+  }
+
+  hasDb() {
+    return this.db !== undefined;
   }
 
   get readLink():string { return location.origin + location.pathname + this.location.prepareExternalUrl("whittles/" + this.readUUID) }

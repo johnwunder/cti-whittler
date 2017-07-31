@@ -14,6 +14,7 @@ export class VisualizerComponent implements OnInit {
   private margin:any = { top: 20, bottom: 20, left: 20, right: 20};
   private width:number;
   private height:number;
+  private minSize:number;
   private svg:any; // Really a native element
   private forceLayout:d3.Simulation<any, any>;
   private currentlyShowing:Stix.Bundle;
@@ -23,6 +24,7 @@ export class VisualizerComponent implements OnInit {
 
   private node:any;
   private edge:any;
+  private edgeLabels:any;
 
   initialized:boolean = false;
 
@@ -39,22 +41,34 @@ export class VisualizerComponent implements OnInit {
     this.width = element.offsetWidth - this.margin.left - this.margin.right;
     this.height = element.offsetHeight - this.margin.top - this.margin.bottom;
 
+    // minSize is the smaller or either height or width
+    if(this.width < this.height) {
+      this.minSize = this.width;
+    } else {
+      this.minSize = this.height;
+    }
+
     // Create the svg element as a child of the container and set its size manually
     this.svg = d3.select(element).append('svg')
       .attr('width', element.offsetWidth - 20)
       .attr('height', element.offsetHeight - 20);
+
+    let maxX = element.offsetWidth - 20;
+    let maxY = element.offsetHeight - 20;
 
     this.svg.append("g").attr("class", "links")
     this.svg.append("g").attr("class", "nodes")
 
     // this is a simple force layout, centered horizontally and vertically
     this.forceLayout = d3.forceSimulation()
-      .force("charge", d3.forceManyBody())
-      .force("center", d3.forceCenter(this.width / 2, this.height / 2));
+      .force("charge", d3.forceManyBody().distanceMax(this.minSize / 4))
+      .force("center", d3.forceCenter(this.width / 2, this.height / 2))
+      .force("collide", d3.forceCollide().radius(100))
 
     // the tick function just updates the x and the y based on the layout x and y
     this.forceLayout.on("tick", () => {
       if(this.edge === undefined) { return }
+
       this.edge.select("path").attr("d", (d) => {
         let dx = d.target.x - d.source.x;
         let dy = d.target.y - d.source.y;
@@ -63,7 +77,32 @@ export class VisualizerComponent implements OnInit {
       });
 
       this.node.attr("transform", function(d) {
-        return "translate(" + (d.x - 15) + "," + (d.y - 15) + ")";
+        let x:number;
+        let y:number;
+        if(d.x < maxX - 15) {
+          x = d.x;
+        } else {
+          x = maxX - 15;
+        }
+
+        if(d.y < maxY - 15) {
+          y = d.y;
+        } else {
+          y = maxY - 15;
+        }
+        return "translate(" + (x - 15) + "," + (y - 15) + ")";
+      });
+
+      this.edgeLabels.attr('transform',function(d,i) {
+        if (d.target.x < d.source.x) {
+          let bbox = this.getBBox();
+          let rx = bbox.x+bbox.width/2;
+          let ry = bbox.y+bbox.height/2;
+          return 'rotate(180 '+rx+' '+ry+')';
+        }
+        else {
+          return 'rotate(0)';
+        }
       });
     });
 
@@ -106,10 +145,13 @@ export class VisualizerComponent implements OnInit {
     enterEdge.append("path").attr("id", (d) => "path-" + d.id);
     enterEdge.append("text").append("textPath").attr("xlink:href", (d) => "#path-" + d.id).attr("startOffset", "50%")
 
+
+
     let exitEdge = this.edge.exit().remove();
 
     this.edge = enterEdge.merge(this.edge);
     this.edge.select("textPath").text((d) => d.label)
+    this.edgeLabels = this.edge.select('text');
 
     // ---------------- End Edges -----------------
 
@@ -185,24 +227,30 @@ export class VisualizerComponent implements OnInit {
           }
         }
       } else {
-        for(let k in n) {
-          if(k.match(/_ref$/)) {
-            if(stix.objects.find((o) => o.id === n[k].id)) {
-              this.edges.push({id: n.id+k, source:n.id, target:n[k], label:k})
-            }
-          } else if (k.match(/_refs$/)) {
-            for(let i of n[k]) {
-              if(stix.objects.find((o) => o.id === i)) {
-                this.edges.push({id: n.id+k+i, source:n.id, target:i, label:k})
-              }
-            }
-          }
-        }
+        this.resolveRelationships(n, stix, n.id);
       }
     });
 
     this.forceLayout.nodes(this.nodes)
-    this.forceLayout.force('link', d3.forceLink(this.edges).id((d:any) => { return d.id} ).distance(160));
+    this.forceLayout.force('link', d3.forceLink(this.edges).id((d:any) => { return d.id} ).distance(200));
     this.forceLayout.alpha(1).restart();
+  }
+
+  resolveRelationships(obj:any, stix:Stix.Bundle, sourceId:string) {
+    for(let k in obj) {
+      if(k.match(/_ref$/)) {
+        if(stix.objects.find((o) => o.id === obj[k])) {
+          this.edges.push({id: obj.id+k, source:sourceId, target:obj[k], label:k})
+        }
+      } else if (k.match(/_refs$/)) {
+        for(let i of obj[k]) {
+          if(stix.objects.find((o) => o.id === i)) {
+            this.edges.push({id: obj.id+k+i, source:sourceId, target:i, label:k})
+          }
+        }
+      } else if (typeof obj[k] === "object") {
+        this.resolveRelationships(obj[k], stix, sourceId);
+      }
+    }
   }
 }

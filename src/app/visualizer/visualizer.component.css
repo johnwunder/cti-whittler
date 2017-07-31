@@ -18,7 +18,11 @@ div#d3container {
 }
 
 .nodes text {
-  font-size: 20px;
+  font-size: 16px;
+  stroke-width: 10px;
+  stroke: white;
+  stroke-opacity: 0.7;
+  paint-order: stroke;
 }
 
 text {

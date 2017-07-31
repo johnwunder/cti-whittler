@@ -29,15 +29,24 @@ yaml-entry {
 }
 
 raw-stix {
-  margin: 0;
+  margin: 15px 0 0 0;
   border: 1px solid #eee;
   border-bottom: 0;
-  padding: 15px;
+  padding: 0 15px 15px 15px;
   position: absolute;
   top: 50%;
-  bottom: 0;
+  bottom: 15px;
   left: 0;
   right: 0;
+  overflow-y: scroll;
+}
+
+#copy-json {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-family: 'Source Sans Pro';
+  font-size: 14px;
 }
 
 body {

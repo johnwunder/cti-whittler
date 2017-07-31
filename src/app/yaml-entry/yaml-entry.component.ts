@@ -16,10 +16,10 @@ export class YamlEntryComponent implements OnInit {
   @ViewChild('editor') editor;
 
   @Output() stixChanged = new EventEmitter();
-  @Input() rawInput:string;
   @Input() readOnly:boolean;
 
   bundle:Stix.Bundle;
+  settingText = false; // Super ugly but the only way to track whether the onChange event is real or fake is by setting this
 
   constructor() {
     this.bundle = new Stix.Bundle();
@@ -30,9 +30,18 @@ export class YamlEntryComponent implements OnInit {
   }
 
   handleUserEntry(rawStix:string):void {
-    this.rawInput = rawStix;
+    if(this.settingText) { return }
+    this.editor.text = rawStix;
     this.generateSTIX(rawStix);
-    this.stixChanged.emit({bundle: this.bundle, text: this.rawInput});
+    this.stixChanged.emit({bundle: this.bundle, text: this.editor.text, persist: true});
+  }
+
+  handleNewStix(rawStix:string):void {
+    this.settingText = true;
+    this.editor.text = rawStix;
+    this.settingText = false;
+    this.generateSTIX(rawStix);
+    this.stixChanged.emit({bundle: this.bundle, text: this.editor.text, persist: false});
   }
 
   splitObjects(input:string):Array<string> {
@@ -80,7 +89,7 @@ export class YamlEntryComponent implements OnInit {
     }
   }
 
-  private resolveRelationships(obj:Stix.Object, allObjs:Stix.Object[]):void {
+  private resolveRelationships(obj:any, allObjs:Stix.Object[]):void {
     for (let prop in obj) {
       if(prop.match(/_ref$/)) {
           obj[prop] = this.resolveRelationship(obj[prop], allObjs);
@@ -88,6 +97,8 @@ export class YamlEntryComponent implements OnInit {
         for(let i = 0; i < obj[prop].length; i++) {
           obj[prop][i] = this.resolveRelationship(obj[prop][i], allObjs);
         }
+      } else if (typeof obj[prop] === "object") {
+        this.resolveRelationships(obj[prop], allObjs);
       }
     }
   }
