@@ -110,9 +110,9 @@ export class YamlEntryComponent implements OnInit {
       let target = allObjects.find((o) => o['name'] === idref)
       if(target) {
         return target.id;
+      } else {
+        return idref;
       }
     }
-
-    return null;
   }
 }
